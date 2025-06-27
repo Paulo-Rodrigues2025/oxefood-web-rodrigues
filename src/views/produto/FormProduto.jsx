@@ -14,6 +14,9 @@ export default function FormProduto() {
   const [tempoEntregaMax, setTempoEntregaMax] = useState();
   const { state } = useLocation();
   const [idProduto, setIdProduto] = useState();
+  const [listaCategoria, setListaCategoria] = useState([]);
+   const [idCategoria, setIdCategoria] = useState();
+
 
   useEffect(() => {
     if (state != null && state.id != null) {
@@ -27,14 +30,23 @@ export default function FormProduto() {
           setValorUnitario(response.data.valorUnitario);
           setTempoEntregaMin(response.data.tempoEntregaMin);
           setTempoEntregaMax(response.data.tempoEntregaMax);
+          setIdCategoria(response.data.categoria.id)
         });
     }
+
+     axios.get("http://localhost:8080/api/categoriaproduto")
+       .then((response) => {
+           const dropDownCategorias = response.data.map(c => ({ text: c.descricao, value: c.id }));
+           setListaCategoria(dropDownCategorias);
+       })
+
   }, [state]);
 
   function salvar() {
     let produtoRequest = {
-      titulo: titulo,
-      codigoDoProduto: codigoDoProduto,
+           codigoDoProduto: codigoDoProduto,
+       idCategoria: idCategoria,
+        titulo: titulo,
       descricao: descricao,
       valorUnitario: valorUnitario,
       tempoEntregaMin: tempoEntregaMin,
@@ -81,7 +93,7 @@ export default function FormProduto() {
               Cadastro
             </h2>
           )}
-          {idProduto != undefined && (
+          {idProduto !== undefined && (
             <h2>
               {" "}
               <span style={{ color: "darkgray" }}>
@@ -118,6 +130,7 @@ export default function FormProduto() {
                   onChange={(e) => setTitulo(e.target.value)}
                 />
 
+            
                 <Form.Input required fluid label="Código do Produto">
                   <InputMask
                     required
@@ -127,6 +140,19 @@ export default function FormProduto() {
                   />
                 </Form.Input>
               </Form.Group>
+
+               <Form.Select
+                  required
+                  fluid
+                  tabIndex='3'
+                  placeholder='Selecione'
+                  label='Categoria'
+                  options={listaCategoria}
+                  value={idCategoria}
+                  onChange={(e,{value}) => {
+                    setIdCategoria(value)
+                  }}
+                />
 
               <Form.TextArea
                 fluid
@@ -164,6 +190,22 @@ export default function FormProduto() {
                   onChange={(e) => setTempoEntregaMax(e.target.value)}
                 ></Form.Input>
               </Form.Group>
+
+              {/* "botão" sim e não, abaixo: Obs: colocar em cliente
+
+              <FormGroup inline> 
+                <label>Ativo:</label>
+                <FormRadio
+                  label="Sim"
+                  checked={ativo === true}
+                  onChange={(e) => setAtivo(true)}
+                />
+                <FormRadio
+                  label="Não"
+                  checked={ativo === false}
+                  onChange={(e) => setAtivo(false)}
+                />
+              </FormGroup> */}
             </Form>
 
             <div style={{ marginTop: "4%" }}>

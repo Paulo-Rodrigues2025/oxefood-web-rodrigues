@@ -23,13 +23,13 @@ export default function FormEntregador() {
   const [complemento, setComplemento] = useState();
   const { state } = useLocation();
   const [idEntregador, setIdEntregador] = useState();
-  
+
   useEffect(() => {
     if (state != null && state.id != null) {
       axios
         .get("http://localhost:8080/api/entregador/" + state.id)
         .then((response) => {
-          setIdEntregador(response.data.id)
+          setIdEntregador(response.data.id);
           setNome(response.data.nome);
           setCpf(response.data.cpf);
           setRg(response.data.rg);
@@ -180,7 +180,6 @@ export default function FormEntregador() {
                   />
                 </Form.Input>
 
-                
                 <Form.Input
                   required
                   fluid
@@ -225,7 +224,6 @@ export default function FormEntregador() {
 
                 <Form.Input fluid label="QTD Entregas Realizadas" width={6}>
                   <InputMask
-                    
                     value={entregasRealizadas}
                     onChange={(e) => setEntregasRealizadas(e.target.value)}
                   />
@@ -233,7 +231,6 @@ export default function FormEntregador() {
 
                 <Form.Input fluid label="Valor por Frete" width={6}>
                   <InputMask
-                    
                     value={valorPorFrete}
                     onChange={(e) => setValorPorFrete(e.target.value)}
                   />
@@ -313,6 +310,22 @@ export default function FormEntregador() {
                 value={complemento}
                 onChange={(e) => setComplemento(e.target.value)}
               />
+
+              {/* "botão" sim e não, abaixo: */}
+              {/* <FormGroup inline>
+                <label>Ativo:</label>
+                <FormRadio
+                  label="Sim"
+                  checked={ativo === true}
+                  onChange={(e) => setAtivo(true)}
+                />
+                <FormRadio
+                  label="Não"
+                  checked={ativo === false}
+                  onChange={(e) => setAtivo(false)}
+                />
+              </FormGroup> */}
+
             </Form>
 
             <div style={{ marginTop: "4%" }}>
@@ -338,7 +351,7 @@ export default function FormEntregador() {
                 onClick={() => salvar()}
               >
                 <Icon name="save" />
-                Salvar 
+                Salvar
               </Button>
             </div>
           </div>
